@@ -45,3 +45,20 @@ def load_pics(urls: list):
                 file.write(req.content)
     except FileExistsError:
         pass
+
+def is_admin(login: str):
+    file = open("admins.yaml", "rt")
+    admins = ya.safe_load(file)
+    file.close()
+    return hash(login) in admins
+
+def add_admin(login: str):
+    try:
+        if not(is_admin(login)):
+            file = open("admins.yaml", "at")
+            ya.dump([hash(login)], file)
+    except FileNotFoundError:
+        file = open("admins.yaml", "at")
+        ya.dump([hash(login)], file)
+    finally:
+        file.close()
