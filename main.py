@@ -1,52 +1,25 @@
-import vk_api as va
-import webbrowser as wb
-import requests as rq
-import json
-import os
-
-def captcha_handler(captcha):
-    key = input("Enter captcha code {0}: ".format(captcha.get_url())).strip()
-    return captcha.try_again(key)
-
-def auth_handler():
-    key = input("Enter authentication code: ")
-    remember_device = True
-    return key, remember_device
+import file_handler as fh
+import api_handler as ah
 
 def main():
+    mylogin = input("Login: ")
 
-    client_id = 8196809
-    redirect_uri = 'https://oauth.vk.com/blank.html'
-    display = 'page'
-    myscope = 65540
-    response_type = 'token'
+    vk = ah.get_vk_api(mylogin)
 
-    wb.open('https://oauth.vk.com/authorize?' + 'client_id=' + str(client_id) + "&" + 'redirect_uri=' + str(redirect_uri) + "&" + 'display=' + str(display) + "&" + 'scope=' + str(myscope) + "&" + 'response_type=' + str(response_type))
+    photos, urls = ah.get_photos(vk)
 
-    params = input().split('#')[1].split('&')
-    user_id = int(params[2].split("=")[1])
-    mytoken = str(params[0].split("=")[1])
-    
-    vk_session = va.VkApi(login = '+79953098236', token = mytoken, auth_handler = auth_handler, captcha_handler = captcha_handler, app_id = client_id)
-    vk = vk_session.get_api()
+    fh.load_pics(urls)
 
-    photos = vk.photos.get(owner_id = -197700721, album_id = 284717200, count = 0)
-
-    photos = vk.photos.get(owner_id = -197700721, album_id = 284717200, count = photos['count'])
-
-    try:
-        os.mkdir("pics")
-    except:
-        print(end="")
-
-    
-    for i in range(0, photos['count']):
-        print(i)
-        r = rq.get(photos['items'][i]['sizes'][len(photos['items'][i]['sizes'])-1]['url'])
-        with open("pics/" + str(i) + '.jpg', 'wb') as f:
-            f.write(r.content)
-    print(photos['items'][0]['user_id'])
-    
+    for i in range(0, len(photos)):
+        curr_photo = photos[i]
+        if not(curr_photo['likes']['user_likes']):
+            while True:
+                inp = input(str(i) + " Like or Skip?\n")
+                if inp == "Like":
+                    vk.likes.add(type = "photo", owner_id = curr_photo['owner_id'], item_id = curr_photo['id'])
+                    break
+                elif inp == "Skip":
+                    break
 
 if __name__ == "__main__":
     main()
