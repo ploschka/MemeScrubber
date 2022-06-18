@@ -3,6 +3,7 @@ import api_handler as ah
 
 def main():
     mylogin = input("Login: ")
+    print()
 
     vk = ah.get_vk_api(mylogin)
 
@@ -12,14 +13,18 @@ def main():
 
     for i in range(0, len(photos)):
         curr_photo = photos[i]
-        if not(curr_photo['likes']['user_likes']):
-            while True:
-                inp = input(str(i) + " Like or Skip?\n")
-                if inp == "Like":
-                    vk.likes.add(type = "photo", owner_id = curr_photo['owner_id'], item_id = curr_photo['id'])
-                    break
-                elif inp == "Skip":
-                    break
+        user = vk.users.get(user_ids = curr_photo['user_id'])[0]
+        print("Author:", user['first_name'], user['last_name'], "Likes =", curr_photo['likes']['count'], end = ". ")
+        if (curr_photo['likes']['user_likes']):
+            print("You've already leaved a like", end = "")
+        print()
+        while True:
+            inp = input(str(i) + " Like or skip?\n")
+            if inp == "Like" or "like" or "L" or "l":
+                vk.likes.add(type = "photo", owner_id = curr_photo['owner_id'], item_id = curr_photo['id'])
+                break
+            elif inp == "Skip" or "skip" or "S" or "s":
+                break
 
 if __name__ == "__main__":
     main()

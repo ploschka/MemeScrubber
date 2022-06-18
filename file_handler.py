@@ -15,18 +15,19 @@ def cache(mylogin: str):
         file = open("accounts.yaml", "r+")
         accs = ya.safe_load(file)
         is_he_in, usr = is_in_yaml(mylogin, accs)
-        if is_he_in:            
+        if is_he_in:          
             user_id = usr["id"]
             mytoken = usr["access_token"]
-            return user_id, mytoken
         else:
-            user_id, mytoken = ah.get_data()            
+            user_id, mytoken = ah.get_data()
+            dict = {"login": mylogin,"id": user_id, "access_token": mytoken}
+            ya.dump([dict], file)
     except FileNotFoundError:
         file = open("accounts.yaml", "w+")
         user_id, mytoken = ah.get_data()
-    finally:
         dict = {"login": mylogin,"id": user_id, "access_token": mytoken}
         ya.dump([dict], file)
+    finally:
         file.close()
         return user_id, mytoken
 

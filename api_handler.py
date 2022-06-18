@@ -20,6 +20,7 @@ def get_data():
     
     wb.open(URL)
     params = input("URL: \n").split('#')[1].split('&')
+    print()
     user_id = int(params[2].split("=")[1])
     mytoken = str(params[0].split("=")[1])
 
