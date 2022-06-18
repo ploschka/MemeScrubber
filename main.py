@@ -26,14 +26,8 @@ def main():
     params = input().split('#')[1].split('&')
     user_id = int(params[2].split("=")[1])
     mytoken = str(params[0].split("=")[1])
-    #mytoken = "vk1.a.61ktaWJ6aDpVuJSprMlxNvLl024p58CyuRIxGbW9xSaDRLaIJdVfLdgWxYnks-oIQMstpgPkMFd9nUm8Zb-IqTUGHjuXpve-IMfxb6MkG246rj3OTQO7KfnND_BtdQdN2LlJo06UORaIrx3RzMX4ObqTqXvEXclJgwauck3XZIgmNA5O_5bYWivofTFheRBY"
-
-    print(mytoken)
-
     
-    print("Hello, World!")
     vk_session = va.VkApi(login = '+79953098236', token = mytoken, auth_handler = auth_handler, captcha_handler = captcha_handler, app_id = client_id)
-    #vk_session.auth(token_only=True)
     vk = vk_session.get_api()
 
     photos = vk.photos.get(owner_id = -197700721, album_id = 284717200, count = 0)
@@ -45,7 +39,6 @@ def main():
     except:
         print(end="")
 
-    print(photos['count'])
     
     for i in range(0, photos['count']):
         print(i)
