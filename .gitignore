@@ -3,5 +3,5 @@ pics
 *.json
 debug.py
 *.yaml
-!groups.yaml
+!albums.yaml
 __pycache__

@@ -2,15 +2,20 @@ import vk_api as va
 import file_handler as fh
 import webbrowser as wb
 
+def __captcha_handler(captcha):
+
+    key = input("Enter captcha code {0}: ".format(captcha.get_url())).strip()
+    return captcha.try_again(key)
+
 def get_vk_api(login: str):
     app_id = 8196809
 
-    user_id, mytoken = fh.cache(login)
+    user_id, mytoken = fh.__cache(login)
 
-    vk_session = va.VkApi(login = '+79953098236', token = mytoken, app_id = app_id)
+    vk_session = va.VkApi(login = '+79953098236', token = mytoken, app_id = app_id, captcha_handler=__captcha_handler)
     return vk_session.get_api()
 
-def get_data():
+def __get_data():
     app_id = 8196809
     redirect_uri = 'https://oauth.vk.com/blank.html'
     display = 'page'
@@ -29,7 +34,7 @@ def get_data():
 def get_photos(vk):
     photos = []
     urls = []
-    groups = fh.get_groups()
+    groups = fh.__get_groups()
     group_count = len(groups)
     tmp_index = 0
     for i in range(0, group_count):

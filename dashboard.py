@@ -2,17 +2,16 @@ import api_handler as ah
 import os
 import time
 
+import file_handler as fh
+
 def like_count(photo):
     return photo['likes']['count']
 
 def space_count(a: int, b: str):
     return (a - len(b))*" "
 
-def main():
-    mylogin = input("Login: ")
-    print()
-
-    vk = ah.get_vk_api(mylogin)
+def main(login):
+    vk = ah.get_vk_api(login)
 
     while True:
         os.system("clear")
@@ -24,7 +23,7 @@ def main():
         for pht in s_photos:
             user = vk.users.get(user_ids = pht['user_id'])[0]
             up_photos.append({"num": str(i), "owner": user['first_name'] + " " + user['last_name'], "id": str(pht['id']), "likes": str(like_count(pht))})
-            print("Done", i, "from", of, end="\r")
+            print("Done ", i, "/", of, end="\r", sep="")
             i += 1
         os.system("clear")
         print("Place  ", "Owner name              ", "ID        ", "Likes", sep="||", end="||\n")
@@ -34,4 +33,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    mylogin = input("Login: ")
+    if(fh.is_admin(mylogin)):
+        main(mylogin)
