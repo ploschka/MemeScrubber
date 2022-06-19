@@ -38,7 +38,9 @@ def get_photos(vk):
     group_count = len(groups)
     tmp_index = 0
     for i in range(0, group_count):
-        tmp_photos = vk.photos.get(owner_id = groups[i]['owner'], album_id = groups[i]['album'], count = 0)
+        tmp_photos = vk.photos.get(owner_id = groups[i]['owner'],
+            album_id = groups[i]['album'],
+            count = 0)
         this_count = tmp_photos['count']
         photos.extend(vk.photos.get(owner_id = groups[i]['owner'], album_id = groups[i]['album'], count = this_count, extended=1)['items'])
         for j in range(0, this_count):

@@ -1,5 +1,6 @@
 import file_handler as fh
 import api_handler as ah
+import os
 
 def main():
     mylogin = input("Login: ")
@@ -10,6 +11,7 @@ def main():
     photos, urls = ah.get_photos(vk)
 
     fh.load_pics(urls)
+    os.system("clear")
 
     users = []
     of = len(photos)
@@ -17,7 +19,7 @@ def main():
         curr_photo = photos[i]
         users.append(vk.users.get(user_ids = curr_photo['user_id'])[0])
         print("Done ", i+1, "/", of, end="\r", sep="")
-    print
+    os.system("clear")
 
     for i in range(0, len(photos)):
         curr_photo = photos[i]
