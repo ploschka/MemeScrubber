@@ -40,7 +40,7 @@ def __cache(mylogin: str):
         return user_id, mytoken
 
 def __get_groups():
-    file = open("groups.yaml", "rt")
+    file = open("admins.yaml", "rt")
     groups = ya.safe_load(file)
     return groups
 
